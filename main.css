@@ -1,0 +1,22 @@
+@charset "utf-8";
+* {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li { list-style: none;}
+a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.cf:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+
+.navbar {
+  background-color: rgba(113, 29, 165, 0.36)!important;
+}
