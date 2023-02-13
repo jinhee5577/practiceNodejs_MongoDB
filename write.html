@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./main.css" type="text/css">
+  <!-- <link rel="stylesheet" href="./main.css" type="text/css"> -->
   <title>Document</title>
   <style>
     .navbar { background-color: rgba(113, 29, 165, 0.36)!important; }    
     .btn-outline-secondary { background-color: rgba(95, 21, 140, 0.903)!important; color: white;}
+    .send, input {width: 100%; height: 50px; border-radius: 10px;}
+
   </style>
 </head>
 <body>
@@ -36,7 +38,7 @@
   <h4 class="container mt-4"><strong>글 작성페이지</strong></h4>
 
   <div class="container mt-3">
-    <form>
+    <form action="/add" method="POST">   <!-- /add 경로로 POST요청함. -->
       <div class="form-group">
         <label for="todo">오늘의 할일</label>
         <input type="text" id="todo">
@@ -45,7 +47,7 @@
         <label for="date">날짜</label>
         <input type="text" id="date">
       </div>
-      <button type="submit" class="btn btn-outline-secondary">Submit</button>
+      <button type="submit" class="btn btn-outline-secondary send">Submit</button>
     </form>
   </div>
 

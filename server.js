@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.urlencoded({extended: true})); 
 
 app.listen(8080, function() {    //  app.listen()은 원하는 포트에 서버를 오픈하는 문법이라고 보면 된다.
     console.log('listening on 8080')
@@ -44,4 +45,14 @@ app.get('/', (요청, 응답) => {
 
 app.get('/write', (요청, 응답) => { 
     응답.sendFile(__dirname + '/write.html');
+});
+
+
+
+// 2021년 이후로 설치한 프로젝트들은 body-parser 라이브러리가 express에 기본 포함이라 
+// 따로 npm으로 설치할 필요가없다. 
+// app.use(express.urlencoded({extended: true}));  <-- 이 코드만 위쪽에 추가해주면 된다. 
+
+app.post('/add', (요청, 응답) => {
+    응답.send('전송완료.');
 });
