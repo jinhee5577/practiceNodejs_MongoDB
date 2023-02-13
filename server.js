@@ -54,5 +54,8 @@ app.get('/write', (요청, 응답) => {
 // app.use(express.urlencoded({extended: true}));  <-- 이 코드만 위쪽에 추가해주면 된다. 
 
 app.post('/add', (요청, 응답) => {
+    console.log(요청.body);  // { todo: 'any', date: '2.13' } 이렇게 나온다.
     응답.send('전송완료.');
 });
+// 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
+// 요청.body는 폼에 입력한 제목과 날짜 데이터가 들어가있을 것이다. 
