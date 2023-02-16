@@ -5,7 +5,7 @@ require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
 
 let db;
-MongoClient.connect(process.env.DB_URL, (에러, client) => { 
+MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (에러, client) => { 
     if (에러) return console.log(에러);
     
     db = client.db('todoapp');  // todoapp이라는 database 연결좀요.
@@ -46,10 +46,6 @@ app.get('/beauty', (요청, 응답) => {
 
 
 app.get('/', (요청, 응답) => {
-    db.collection('post').inserOne({name : 'jinhee', age : 15}, (에러, 결과) => { 
-         console.log('저장완료.')   
-    });
-    
     응답.sendFile(__dirname + '/index.html');
 });
 // 그럼 누군가 / 경로로 접속시 (/ 하나만 있으면 홈페이지 이다)
@@ -69,7 +65,11 @@ app.get('/write', (요청, 응답) => {
 
 app.post('/add', (요청, 응답) => {
     console.log(요청.body);  // { todo: 'any', date: '2.13' } 이렇게 나온다.
-    응답.send('전송완료.');
+    const data = 요청.body;
+    db.collection('post').insertOne(data, (에러, 결과) => { 
+        console.log('저장완료.');
+        응답.send('전송완료.');   
+    });
 });
 // 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
 // 요청.body는 폼에 입력한 제목과 날짜 데이터가 들어가있을 것이다. 
@@ -97,3 +97,12 @@ app.post('/add', (요청, 응답) => {
 
 // 그리고 app.listen이라고 서버 띄우는 코드를 여기 안으로 옮겨주면 된다.
 // 터미널에서 nodemon server.js로 서버를 실행해보면 listening on 8080이 잘뜨면 성공이다.
+
+
+
+// db.collection('post').insertOne({name : 'jinhee', age : 15}, (에러, 결과) => { 
+//    db.collection('post') 라는건 collection 중에 post 라는걸 선택한다는 뜻이고
+//    insertOne()을 붙이면 자료를 추가할 수있다. (Object 자료형식으로 추가가능)
+//    insertOne() 함수는 insertOne(추가할 자료, 콜백함수) 이렇게 쓰면된다.    
+//    console.log('저장완료.')   
+// });
