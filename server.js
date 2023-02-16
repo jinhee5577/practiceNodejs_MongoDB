@@ -1,13 +1,16 @@
 const express = require('express');
 const app = express();
-app.use(express.urlencoded({extended: true})); 
+app.use(express.urlencoded({extended: true}));
+require('dotenv').config(); 
 const MongoClient = require('mongodb').MongoClient;
 
-MongoClient.connect('mongodb+srv://admin:wlsgml153@jini.fpfne7k.mongodb.net/todoapp?retryWrites=true&w=majority', (에러, client) => { 
+let db;
+MongoClient.connect(process.env.DB_URL, (에러, client) => { 
     if (에러) return console.log(에러);
     
+    db = client.db('todoapp');  // todoapp이라는 database 연결좀요.
     // database접속이 완료되면 콜백함수를 실행해준다. 
-    app.listen(8080, function() {    //  app.listen()은 원하는 포트에 서버를 오픈하는 문법이라고 보면 된다.
+    app.listen(process.env.PORT, function() {    //  app.listen()은 원하는 포트에 서버를 오픈하는 문법이라고 보면 된다.
         console.log('listening on 8080');
     });
     // 여기까지가 서버를 띄우기 위해 작성할 기본 셋팅.
@@ -42,7 +45,11 @@ app.get('/beauty', (요청, 응답) => {
 // 그럼 파일 저장할때 마다 이제 지가 알아서 서버를 새로 시작해준다. 
 
 
-app.get('/', (요청, 응답) => { 
+app.get('/', (요청, 응답) => {
+    db.collection('post').inserOne({name : 'jinhee', age : 15}, (에러, 결과) => { 
+         console.log('저장완료.')   
+    });
+    
     응답.sendFile(__dirname + '/index.html');
 });
 // 그럼 누군가 / 경로로 접속시 (/ 하나만 있으면 홈페이지 이다)
@@ -66,3 +73,27 @@ app.post('/add', (요청, 응답) => {
 });
 // 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
 // 요청.body는 폼에 입력한 제목과 날짜 데이터가 들어가있을 것이다. 
+
+
+
+
+// server.js에서 DB접속하려면 
+// 1.터미널 켜서 npm install mongodb@3.6.4 를 입력해서 라이브러리를 설치한다.
+// MongoDB 접속을 쉽게 도와주는 라이브러리 이다.
+
+// 2.server.js 상단에 다음 const MongoClient = require('mongodb').MongoClient; 코드를 추가한다.
+
+// 3.그다음 하단에 다음 코드를 입력해준다. 
+//  MongoClient.connect('챙겨온 접속URL', function(에러, client){
+//     if (에러) return console.log(에러);
+       //서버띄우는 코드 여기로 옮기기
+//     app.listen('8080', function(){
+//        console.log('listening on 8080');
+//     });
+//  });
+// 접속 URL은 대충 이렇게 생겼는데
+// mongodb+srv://디비계정아이디:디비계정패스워드@cluster0-qaxa3.mongodb.net/데이터베이스이름?retryWrites=true&w=majority
+// 저부분 3개를 내가 만든걸로 잘채워 입력해야한다.
+
+// 그리고 app.listen이라고 서버 띄우는 코드를 여기 안으로 옮겨주면 된다.
+// 터미널에서 nodemon server.js로 서버를 실행해보면 listening on 8080이 잘뜨면 성공이다.
