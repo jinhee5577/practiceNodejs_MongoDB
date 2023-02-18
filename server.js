@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 app.use(express.urlencoded({extended: true}));
-require('dotenv').config(); 
+require('dotenv').config();
+app.set('view engine', 'ejs');
 const MongoClient = require('mongodb').MongoClient;
 
 let db;
@@ -106,3 +107,17 @@ app.post('/add', (요청, 응답) => {
 //    insertOne() 함수는 insertOne(추가할 자료, 콜백함수) 이렇게 쓰면된다.    
 //    console.log('저장완료.')   
 // });
+
+
+
+// EJS 설치하자.
+// EJS는 서버 데이터를 HTML에 쉽게쉽게 넣을수있게 도와주는 일종의 HTML렌더링 엔진이다. 
+// 터미널에서 npm install ejs 하고, Server.js 상단에 app.set('view engine', 'ejs'); 적어주면 된다.
+
+
+app.get('/list', (요청, 응답) => { 
+    응답.render('list.ejs');    
+});
+
+// EJS 파일 만들때 주의할점 : 작업폴더 내에 views라는 폴더를 하나 만든후
+// 거기에 list.ejs 파일을 만들어야 한다.  
