@@ -33,13 +33,13 @@
     <h2>TODO LIST</h2>
 
     <ul>
-      <li>
-        <h3>할일 : <%= %></h3>
-        <h4>날짜 : <%=  %> </h4>
-      </li>
+      <% for(let ele of posts){ %>
+            <li>
+              <h3>할일 : <%= ele.todo %></h3>
+              <h4>날짜 : <%= ele.date %> </h4>
+            </li>   
+      <% } %>     
     </ul>
-
-
 
 
 

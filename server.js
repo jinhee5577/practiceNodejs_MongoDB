@@ -116,7 +116,10 @@ app.post('/add', (요청, 응답) => {
 
 
 app.get('/list', (요청, 응답) => { 
-    응답.render('list.ejs');    
+    db.collection('post').find().toArray((에러, 결과) => {
+       console.log(결과);  // collection('post')에 있는 모든데이터를 Array자료형으로 가져온다. 
+       응답.render('list.ejs', {posts : 결과});  // 결과 데이터를 posts라는 이름으로 ejs파일에 보내준다.    
+    });
 });
 
 // EJS 파일 만들때 주의할점 : 작업폴더 내에 views라는 폴더를 하나 만든후
