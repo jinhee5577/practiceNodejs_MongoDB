@@ -66,10 +66,16 @@ app.get('/write', (요청, 응답) => {
 
 app.post('/add', (요청, 응답) => {
     console.log(요청.body);  // { todo: 'any', date: '2.13' } 이렇게 나온다.
-    const data = 요청.body;
-    db.collection('post').insertOne(data, (에러, 결과) => { 
-        console.log('저장완료.');
-        응답.send('전송완료.');   
+
+    db.collection('index').findOne({name : '게시물갯수'}, (에러, 결과) => { 
+       console.log(결과.totalIndex);
+       const totalInd = 결과.totalIndex;  
+       
+       const data = {_id : 1, ...요청.body}; 
+       db.collection('post').insertOne(data, (에러, 결과) => { 
+          console.log('저장완료.');
+          응답.send('전송완료.');   
+       });
     });
 });
 // 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
