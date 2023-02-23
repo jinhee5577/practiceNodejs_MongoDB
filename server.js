@@ -76,6 +76,7 @@ app.post('/add', (요청, 응답) => {
           console.log('저장완료.');
           응답.send('전송완료.');   
           db.collection('index').updateOne({name : '게시물갯수'}, {$inc : {totalIndex : 1}}, (에러, 결과) => { 
+             // {$inc : { totalPost : 1 }} 기존값에 1만큼 더해준다. 
              if(에러){return console.log(에러);}
           });
        });
@@ -143,3 +144,19 @@ app.get('/list', (요청, 응답) => {
 
 // collection을 하나 더 만들자.
 // index컬렉션 에서 totalPost라는 곳에 지금까지 몇번게시물을 발행했는지를 저장할 것이다.  
+
+
+
+// DB데이터를 수정하고 싶으면 updateOne을 쓰면 된다. 
+// db.collection('counter').updateOne({요런 이름의 자료를} , {이렇게 수정해주세요} , (에러, 결과) => {
+//    updateOne함수엔 파라미터가 세개가 필요하다. 
+//    왼쪽엔 {name : '게시물갯수'} 이렇게 자료를 찾을 수있는 쿼리문을 적어주면 된다.  
+//    가운데는 수정할 값을 입력해주면 된다.
+//    {$set : {totalPost : 100}} 이렇게 넣어서 값을 아예 100으로 변경할 수도있고
+//    {$inc : {totalPost : 5}} 이렇게 넣어서 기존값에 5만큼 더해줄 수도있다. 
+//    $표시 붙은게 operator 라는 문법이다. 여러 종류가 있으니 나머지는 필요할 때 찾아쓰도록 하자. 
+//    마지막은 그냥 콜백함수 이다. 수정이 실패나 성공시 실행할 코드를 안에 담으면 된다.
+    
+//    console.log('수정완료');
+// });
+
