@@ -71,10 +71,13 @@ app.post('/add', (요청, 응답) => {
        console.log(결과.totalIndex);
        const totalInd = 결과.totalIndex;  
        
-       const data = {_id : 1, ...요청.body}; 
+       const data = {_id : totalInd + 1, ...요청.body}; 
        db.collection('post').insertOne(data, (에러, 결과) => { 
           console.log('저장완료.');
           응답.send('전송완료.');   
+          db.collection('index').updateOne({name : '게시물갯수'}, {$inc : {totalIndex : 1}}, (에러, 결과) => { 
+             if(에러){return console.log(에러);}
+          });
        });
     });
 });
