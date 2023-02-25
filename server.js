@@ -160,3 +160,9 @@ app.get('/list', (요청, 응답) => {
 //    console.log('수정완료');
 // });
 
+
+
+app.delete('/delete', (요청, 응답) => { 
+    //  /delete경로로 DELETE요청을 하면 ~~해주세요. 라는 코드다.
+    console.log(요청.body);  // 요청할때 함께보낸 data가 요청.body에 들어있다.
+});
