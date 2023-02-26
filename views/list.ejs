@@ -53,7 +53,7 @@
       $.ajax({
          method : 'DELETE',
          url : '/delete',   // 요청할 경로.
-         data : 123,        // 요청과 함께 보낼 데이터.  
+         data : {_id : 1},  // 요청과 함께 보낼 데이터.  
       }).done((result) => { 
          // ajax요청이 성공했을때 실행할 코드
       }).fail((error) => { 

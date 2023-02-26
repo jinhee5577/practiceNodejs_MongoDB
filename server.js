@@ -164,5 +164,10 @@ app.get('/list', (요청, 응답) => {
 
 app.delete('/delete', (요청, 응답) => { 
     //  /delete경로로 DELETE요청을 하면 ~~해주세요. 라는 코드다.
-    console.log(요청.body);  // 요청할때 함께보낸 data가 요청.body에 들어있다.
+    console.log(요청.body);  // 요청할때 함께보낸 data가 요청.body에 들어있다. ex) {_id : '2'}
+    요청.body._id = parseInt(요청.body._id);
+
+    db.collection('post').deleteOne(요청.body, (에러, 결과) => {
+       console.log('삭제완료.'); 
+    });
 });
