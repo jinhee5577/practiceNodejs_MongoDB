@@ -37,7 +37,7 @@
           <li class="list-group-item">
             <h5>할일 : <%= ele.todo %></h5>
             <h6>날짜 : <%= ele.date %></h6>
-            <button type="button" class="btn btn-success">삭제</button>
+            <button type="button" class="btn btn-success delete">삭제</button>
           </li>
       <% } %>         
     </ul>
@@ -49,16 +49,19 @@
     <script>
       // HTML폼에서 일반적으로 PUT, DELETE 요청을 할수는 없다. 
       // HTML폼 안에선 GET, POST 요청밖에 못날린다. 
-
-      $.ajax({
+      
+      $('.delete').click(() => {
+        $.ajax({
          method : 'DELETE',
          url : '/delete',   // 요청할 경로.
          data : {_id : 1},  // 요청과 함께 보낼 데이터.  
-      }).done((result) => { 
-         // ajax요청이 성공했을때 실행할 코드
-      }).fail((error) => { 
-         // ajax요청이 실패했을때 실행할 코드       
-      })
+         }).done((result) => { 
+           // ajax요청이 성공했을때 실행할 코드
+         }).fail((error) => { 
+           // ajax요청이 실패했을때 실행할 코드       
+         })
+      });
+      
 
     </script>
 

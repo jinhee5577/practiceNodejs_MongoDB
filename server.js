@@ -168,6 +168,8 @@ app.delete('/delete', (요청, 응답) => {
     요청.body._id = parseInt(요청.body._id);
 
     db.collection('post').deleteOne(요청.body, (에러, 결과) => {
+       // deleteOne 함수를 쓰면 원하는 데이터를 삭제 가능하다.
+       // deleteOne(삭제원하는 데이터이름, () => {}) 이렇게 쓰면된다. 
        console.log('삭제완료.'); 
     });
 });
