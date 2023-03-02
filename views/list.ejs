@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="./main.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <title>DB_list</title>
+    <style>
+      .num {font-size: .88rem; color: rgb(37, 139, 37);}
+    </style>  
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,9 +39,10 @@
     <ul class="list-group">
       <% for(let ele of posts){ %>
           <li class="list-group-item">
+            <p class="num">No) <%= ele._id %></p>
             <h5>할일 : <%= ele.todo %></h5>
             <h6>날짜 : <%= ele.date %></h6>
-            <button type="button" class="btn btn-success delete">삭제</button>
+            <button type="button" data-id="<%= ele._id %>" class="btn btn-success delete">삭제</button>
           </li>
       <% } %>         
     </ul>
