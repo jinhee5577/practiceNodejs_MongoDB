@@ -65,7 +65,8 @@
          }).done((result) => { 
            // ajax요청이 성공했을때 실행할 코드
            console.log('삭제가 성공했습니다.');
-         }).fail((error) => { 
+         }).fail((xhr, code, err) => { 
+           // 3개의 파라미터는 차례로 jQuery의 XMLHttpRequest, 에러코드, 에러메세지 이다.
            // ajax요청이 실패했을때 실행할 코드       
          })
       });
