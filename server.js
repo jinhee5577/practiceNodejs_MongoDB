@@ -171,5 +171,20 @@ app.delete('/delete', (요청, 응답) => {
        // deleteOne 함수를 쓰면 원하는 데이터를 삭제 가능하다.
        // deleteOne(삭제원하는 데이터이름, () => {}) 이렇게 쓰면된다. 
        console.log('삭제완료.'); 
+       응답.status(200).send({message : '성공했습니다.'});  
+       // 응답코드를 이용해 요청이 성공했는지, 실패했는지 판정해줄 수있다.
     });
 });
+
+
+
+// 서버가 요청에 응답할 수 있는 여러가지 방법 
+
+// ex) app.get('/어쩌구', function(요청, 응답){
+//       응답.send('<p>some html</p>')  : send는 간단한 문자나 HTML을 보낼 수있다. 
+//       응답.status(404).send('Sorry, we cannot find that!')  : status는 응답코드를 보낼 수있다. 
+//       응답.sendFile('/uploads/logo.png')  : sendFile은 static파일들을 보낼 수있다. 
+//       응답.render('list.ejs', { ejs에 보낼 데이터 })  : render는 ejs등의 템플릿이 적용된 페이지들을 렌더링해줄 수있다. 
+//       응답.json(제이슨데이터)  : json은 제이슨 데이터를 담아보낼 수있다. 
+//     });
+

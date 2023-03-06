@@ -56,7 +56,7 @@
       // HTML폼 안에선 GET, POST 요청밖에 못날린다. 
       
       $('.delete').click((e) => {
-        const nowId = e.target.dataset.id;
+        const nowId = e.target.dataset.id;  // 지금 클릭한 요소의 data-id 속성값을 가져오세요.
 
         $.ajax({
          method : 'DELETE',
@@ -64,6 +64,7 @@
          data : {_id : nowId},  // 요청과 함께 보낼 데이터.  
          }).done((result) => { 
            // ajax요청이 성공했을때 실행할 코드
+           console.log('삭제가 성공했습니다.');
          }).fail((error) => { 
            // ajax요청이 실패했을때 실행할 코드       
          })
