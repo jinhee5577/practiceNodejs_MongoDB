@@ -192,6 +192,9 @@ app.delete('/delete', (요청, 응답) => {
 
 app.get('/detail/:id', (요청, 응답) => { 
  // URL에 콜론(:)기호를 붙여주면 누군가 /detail/뒤에 아무 숫자나 문자열을 입력하면~ 이라는 뜻이다.     
-    
-    응답.render('detail.ejs');
+    db.collection('post').findOne({_id : parseInt(요청.params.id)}, (에러, 결과) => { 
+       // 요청.params.id 는 url파라미터 중에 :id라는 뜻이다. 
+       응답.render('detail.ejs', {result : 결과});
+
+    });
 });
