@@ -10,6 +10,8 @@
     <title>DB_list</title>
     <style>
       .num {font-size: .88rem; color: rgb(37, 139, 37);}
+      a {display: block; color: inherit;}
+      a:hover {text-decoration: none; color: inherit; }
     </style>  
 
   </head>
@@ -38,12 +40,14 @@
     
     <ul class="list-group">
       <% for(let ele of posts){ %>
-          <li class="list-group-item">
-            <p class="num">No) <%= ele._id %></p>
-            <h5>할일 : <%= ele.todo %></h5>
-            <h6>날짜 : <%= ele.date %></h6>
-            <button type="button" data-id="<%= ele._id %>" class="btn btn-success delete">삭제</button>
-          </li>
+         <li class="list-group-item">            
+           <a href="/detail/<%= ele._id %>">
+             <p class="num">No) <%= ele._id %></p>
+             <h5>할일 : <%= ele.todo %></h5>
+             <h6>날짜 : <%= ele.date %></h6>
+           </a>   
+           <button type="button" data-id="<%= ele._id %>" class="btn btn-success delete">삭제</button>              
+         </li>         
       <% } %>         
     </ul>
     
