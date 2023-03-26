@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./main.css" type="text/css">
+    <link rel="stylesheet" href="/public/main.css" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <title>상세페이지</title>
     <style>
@@ -34,9 +34,19 @@
         </div>
     </nav>   
 
-    <h2 class="ml-3 my-4">detail page</h2>
-    <h5>내할일 : <%= result.todo %></h5>
-    <h5>DATE : <%= result.date %></h5>
+    <div class="container">
+      <h2 class="ml-3 my-4 text-center">detail page</h2>
+      <div class="card mt-5">
+        <div class="card-header">
+          할일 해야지!
+        </div>
+        <div class="card-body">
+          <h5 class="card-title"><%= result.todo %></h5>
+          <p class="card-text"><%= result.date %></p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>  
 
     
 
