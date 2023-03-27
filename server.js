@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 app.use(express.urlencoded({extended: true}));
+app.use('/public', express.static('public'));  // static파일을 보관하기위해 public폴더를 쓸거다. 라는 미들웨어
 require('dotenv').config();
 app.set('view engine', 'ejs');
 const MongoClient = require('mongodb').MongoClient;
