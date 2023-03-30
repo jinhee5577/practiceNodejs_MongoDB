@@ -48,7 +48,8 @@ app.get('/beauty', (요청, 응답) => {
 
 
 app.get('/', (요청, 응답) => {
-    응답.sendFile(__dirname + '/index.html');
+    // 응답.sendFile(__dirname + '/index.html');
+    응답.render('index.ejs');
 });
 // 그럼 누군가 / 경로로 접속시 (/ 하나만 있으면 홈페이지 이다)
 // server.js랑 같은 경로에 있는 /index.html 이라는 파일을 보내준다. 
@@ -56,7 +57,8 @@ app.get('/', (요청, 응답) => {
 // __dirname은 현재 파일의 경로를 뜻한다.
 
 app.get('/write', (요청, 응답) => { 
-    응답.sendFile(__dirname + '/write.html');
+    // 응답.sendFile(__dirname + '/write.html');
+    응답.render('write.ejs');
 });
 
 
