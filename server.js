@@ -213,3 +213,13 @@ app.get('/detail/:id', (요청, 응답) => {
 // 하지만 그냥 넣으면 동작하지 않는다. Node.js에게 "나는 public폴더도 있다"라고 알려주어야한다. 
 // 상단에 app.use('/public', express.static('public')); 이걸 추가해준다.
 // "/public 위치에 있는 폴더를 쓰겠다"라는 뜻이다. 
+
+
+
+
+app.get('/edit/:id', (요청, 응답) => { 
+    db.collection('post').findOne({_id : parseInt(요청.params.id)}, (에러, 결과) => { 
+       console.log(결과); 
+       응답.render('edit.ejs', {data : 결과});
+    });
+});
