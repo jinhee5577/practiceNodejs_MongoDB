@@ -23,11 +23,11 @@
     <form action="/add" method="POST">   <!-- /add 경로로 POST요청함. -->
       <div class="form-group">
         <label for="todo">오늘의 할일</label>
-        <input type="text" id="todo" name="todo" value="">
+        <input type="text" id="todo" name="todo" value="<%= data.todo %>">
       </div>
       <div class="form-group">
         <label for="date">날짜</label>
-        <input type="text" id="date" name="date">
+        <input type="text" id="date" name="date" value="<%= data.date %>">
       </div>
       <button type="submit" class="btn btn-outline-secondary send">수정</button>
     </form>

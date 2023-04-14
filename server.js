@@ -5,6 +5,8 @@ app.use('/public', express.static('public'));  // static파일을 보관하기�
 require('dotenv').config();
 app.set('view engine', 'ejs');
 const MongoClient = require('mongodb').MongoClient;
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 
 let db;
 MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (에러, client) => { 
@@ -223,3 +225,14 @@ app.get('/edit/:id', (요청, 응답) => {
        응답.render('edit.ejs', {data : 결과});
     });
 });
+
+
+
+// form태그 내에선 POST, GET이 두가지 방식만 지원한다.
+// 해결책은.. DELETE 강의 처럼 AJAX를 쓰던가.. 아니면
+// PUT을 기어코 form에 쓰려면 method-override라는 라이브러리를 설치하면 된다. 
+
+// 1. 터미널에 npm install method-override 를 입력해서 설치하면 된다.
+// 2. 설치를 완료하기 위해 server.js 상단에 다음 코드를 추가한다.
+// const methodOverride = require('method-override');
+// app.use(methodOverride('_method')); 
