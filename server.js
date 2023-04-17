@@ -230,9 +230,13 @@ app.get('/edit/:id', (요청, 응답) => {
 
 // form태그 내에선 POST, GET이 두가지 방식만 지원한다.
 // 해결책은.. DELETE 강의 처럼 AJAX를 쓰던가.. 아니면
-// PUT을 기어코 form에 쓰려면 method-override라는 라이브러리를 설치하면 된다. 
+// PUT을 기어코 form에 쓰려면 method-override라는 라이브러리를 설치하면 된다.
+// method-override는 form에서 PUT, DELETE요청을 쓸수있도록 도와주는 라이브러리다.  
 
 // 1. 터미널에 npm install method-override 를 입력해서 설치하면 된다.
 // 2. 설치를 완료하기 위해 server.js 상단에 다음 코드를 추가한다.
 // const methodOverride = require('method-override');
 // app.use(methodOverride('_method')); 
+// 3. 이제 form태그에 PUT요청을 사용할 수있다. 
+// <form action="/add?_method=PUT" method="POST"> 이렇게 수정해주면
+// 폼 전송시 /add 경로로 PUT요청을 해준다.
