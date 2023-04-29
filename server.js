@@ -240,3 +240,16 @@ app.get('/edit/:id', (요청, 응답) => {
 // 3. 이제 form태그에 PUT요청을 사용할 수있다. 
 // <form action="/add?_method=PUT" method="POST"> 이렇게 수정해주면
 // 폼 전송시 /add 경로로 PUT요청을 해준다.
+
+
+
+app.put('/edit', (요청, 응답) => {
+   let obj = { // 수정 data.
+       todo: 요청.body.todo,
+       date: 요청.body.date
+   };
+   console.log(요청.body);
+   db.collection('post').updateOne({_id: 요청.body.id}, {$set: obj}, (에러, 결과) => { 
+      응답.redirect('/list');
+   });
+});
