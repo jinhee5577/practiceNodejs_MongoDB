@@ -249,7 +249,19 @@ app.put('/edit', (요청, 응답) => {
        date: 요청.body.date
    };
    console.log(요청.body);
-   db.collection('post').updateOne({_id: 요청.body.id}, {$set: obj}, (에러, 결과) => { 
+   
+   db.collection('post').updateOne({_id: parseInt(요청.body.id)}, {$set: obj}, (에러, 결과) => { 
       응답.redirect('/list');
+      // 성공이든 실패든 응답을 꼭 해주어야한다. 왜냐면 응답을 안해주면 브라우저가 멈출수 있다.
    });
 });
+
+// 사용법은 updateOne( 1.업데이트할게시물찾기, 2.수정할내용, 3.콜백함수) 라고한다. 
+// 1. 업데이트할 게시물을 찾으려면 기존 게시물의 _id 같은걸 작성해주면 된다. 
+// 2. 그게시물을 업데이트 하려면 $set 이런 operator를 사용하면 된다.
+// 그러면 기존값을 수정/(없으면) 추가 해준다.
+// 3. 콜백함수는 업데이트 완료시 실행할 코드를 적으면 된다.  
+
+// 따라서 "사용자가 /edit으로 PUT요청을 하면"
+// "post라는 콜렉션에 있는 {_id : 요청.body.id } 데이터를 찾아서
+// {제목: 요청.body.title, 날짜: 요청.body.date}로 바꿔주세요" 입니다. 
