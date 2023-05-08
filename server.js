@@ -8,6 +8,15 @@ const MongoClient = require('mongodb').MongoClient;
 const methodOverride = require('method-override');
 app.use(methodOverride('_method'));
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const session = require('express-session');
+
+app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
+app.use(passport.initialize());
+app.use(passport.session()); 
+
+
 let db;
 MongoClient.connect(process.env.DB_URL, { useUnifiedTopology: true }, (에러, client) => { 
     if (에러) return console.log(에러);
@@ -264,4 +273,31 @@ app.put('/edit', (요청, 응답) => {
 
 // 따라서 "사용자가 /edit으로 PUT요청을 하면"
 // "post라는 콜렉션에 있는 {_id : 요청.body.id } 데이터를 찾아서
-// {제목: 요청.body.title, 날짜: 요청.body.date}로 바꿔주세요" 입니다. 
+// {제목: 요청.body.title, 날짜: 요청.body.date}로 바꿔주세요" 입니다.
+
+
+
+// app.use(미들웨어) 어쩌구 부분은 '미들웨어를 쓰겠다'라는 뜻이다.
+// 미들웨어가 뭐냐면.. 서버는 요청을 받으면 응답을 해주는 기계랬죠?
+// 그런데 요청과 응답 사이에 뭔가 실행시키는 코드들이 바로 미들웨어이다.
+// 요청이 적법한지 검사하는 그런 기능들을 미들웨어에 많이 담는다.
+// app.use안에 담는 코드들은 전부 미들웨어 역할을 할수있다.
+// 위에있는 코드중에 passport.initialize() 그리고 passport.session() 이런 코드들이
+// 모든 요청과 응답 중간에 실행된다는 뜻이다.
+// 나중에 미들웨어를 직접 하나 만들고 싶다면 그것도 가능하다.
+// 그냥 app.use() 안에 집어넣어주면 된다. 
+
+
+
+app.get('/login', (요청, 응답) => { 
+    응답.render('login.ejs');
+});
+
+// 어떤 흐름으로 개발할 것이냐면..
+// 어떤사람이 로그인을 하면 일단 그사람의 id와 pw가 DB에있는 아이디와 비번이 맞는지 검사해야한다.
+// 그리고 검사 결과가 맞으면 세션을 하나 생성해주고 성공페이지로 이동시키기,
+// 실패하면 실패페이지로 이동시킵니다. 
+
+app.post('/tologin', (요청, 응답) => { 
+
+});
