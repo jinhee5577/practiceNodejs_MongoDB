@@ -11,7 +11,8 @@ app.use(methodOverride('_method'));
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const session = require('express-session');
-
+// 로그인, 로그인검증, 세션생성을 도와주는 라이브러리 들이다.
+// (실제 서비스시 express-session말고 MongoDB에 세션데이터를 저장해주는 라이브러리를 이용하면 좋다.)
 app.use(session({secret : '비밀코드', resave : true, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session()); 
@@ -298,6 +299,45 @@ app.get('/login', (요청, 응답) => {
 // 그리고 검사 결과가 맞으면 세션을 하나 생성해주고 성공페이지로 이동시키기,
 // 실패하면 실패페이지로 이동시킵니다. 
 
-app.post('/tologin', (요청, 응답) => { 
 
+// 로그인시 그냥 홈으로 이동시키기만 하면 되는게 아니라 중간에 검사를 해야한다.
+// 아이디랑 비번이 맞나요? 이렇게 물어보면 된다.
+app.post('/tologin', passport.authenticate('local', {failureRedirect : '/fail'}), (요청, 응답) => {
+    // post()함수 둘째 파라미터로 미들웨어를 추가해주면 요청과 응답 사이에 특정기능을 실행할수있다.
+    // passport 라이브러리가 제공하는 '아이디, 비번 인증도와주는 코드'이다.
+    // 응답해주기 전에 local방식으로 아이디,비번을 인증해주세요. 라는 뜻으로 해석하면 된다.
+    // (failureRedirect라는 부분은 로그인 인증 실패시 이동시켜줄 경로를 적으면 된다. 위의 코드는 실패시 /fail경로로 유저를 이동시켜준다.)
+    응답.redirect('/'); // 로그인 인증 성공하면 홈으로 보내주세요.
 });
+
+app.get('/fail', (요청, 응답) => {
+    // 로그인 인증 실패시 /fail로 이동하면 원하는 페이지 보여줘라.
+});
+
+
+// 그냥 저렇게만 냅두면 자동으로 인증해주진 않는다.
+// 어떻게 인증할건지 세부코드를 잘 정의해줘야한다.
+passport.use(new LocalStrategy({
+  usernameField: 'id', // 사용자가 제출한 아이디가 어떤<input>의 name속성값을 적어주면 된다.
+  passwordField: 'pw', // 마찬가지다.
+  session: true, // 세션을 하나 만들어줄건지 이다. 만들어줘야 나중에 다시 로그인 안해도 되겠죠?
+  passReqToCallback: false, // 사용자의 아이디/비번 말고도 다른정보를 검사해야할 경우 true로 바꿔주면 된다.
+}, function (입력한아이디, 입력한비번, done) {
+   // true로 바꾸면 콜백함수의 첫째 파라미터로 기타정보들이 들어가는데 파라미터.body 이런식으로 출력해보면 알수있다.
+   // 아직은 쓸일이 없기 때문에 쓸일 있으면 그때 구글에 사용법을 찾아서 쓰도록 하자.
+  //console.log(입력한아이디, 입력한비번);
+  db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
+    if (에러) return done(에러)
+
+    if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
+    if (입력한비번 == 결과.pw) {
+      return done(null, 결과)
+    } else {
+      return done(null, false, { message: '비번틀렸어요' })
+    }
+  })
+}));
+// 이것이 아이디/ 비번을 검사해주는 코드이다.
+// LocalStrategy()는 이게 local방식으로 아이디/비번 검사를 어떻게 할지 도와주는 부분이라고 보면된다.
+// 그리고 그안에 세부설정을 해주면된다.
+// LocalStrategy({ 설정 }, function(){ 아이디비번 검사하는 코드 }) 이런 흐름으로 되어있다. 
