@@ -329,11 +329,14 @@ passport.use(new LocalStrategy({
   db.collection('login').findOne({ id: 입력한아이디 }, function (에러, 결과) {
     if (에러) return done(에러)
 
-    if (!결과) return done(null, false, { message: '존재하지않는 아이디요' })
+    if (!결과) return done(null, false, { message: '존재하지않는 아이디요' });
     if (입력한비번 == 결과.pw) {
-      return done(null, 결과)
+      return done(null, 결과);
+      // done(서버에러, 다맞으면 어디로 보내줄 사용자DB데이터, 에러메시지);
+      // 1)서버에러는 if(에러)문으로 많이처리해서 별로 안중요함.
+      // 2)둘째 파라미터는 id/pw 안맞으면 flase넣어야함.
     } else {
-      return done(null, false, { message: '비번틀렸어요' })
+      return done(null, false, { message: '비번틀렸어요' });
     }
   })
 }));
