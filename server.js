@@ -429,3 +429,19 @@ app.get('/logout', (요청, 응답) => {
     console.log('되냐?');
     요청.logout(() => { 응답.send('로그아웃 되었습니다.'); });    
 });
+
+
+
+// 서버에서 query string 확인하는 법
+app.get('/search', (요청, 응답) => {
+   console.log(요청.query);
+   // 요청.query 하면 query string을 전부 꺼내볼 수있다.
+   // 이건 object자료로 전달되기 때문에 요청.query.value 하면 아까 작성했던 입력한값 데이터가 잘출력된다. 
+   db.collection('post').find({todo: 요청.query.value}).toArray((에러, 결과) => {
+    // 글의 제목이 "사용자가 입력한 검색어"인 게시물을 꺼내보자.
+      console.log(결과);
+   });
+});
+// '이닦기' 검색하면 진짜 콘솔창에 '이닦기'라는 제목의 게시물이 출력된다.
+// 근데 문제는 정확히 제목이 일치하는 것만 찾아준다.
+// 제목이 "이닦기입니다" 이런 게시물은 안찾아준다는 것임.

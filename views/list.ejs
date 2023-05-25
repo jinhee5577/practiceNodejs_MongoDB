@@ -18,7 +18,11 @@
   <body>
     <%- include('nav.html') %>
 
-    <h2 class="ml-3 my-4">TODO LIST</h2>
+    <h2 class="ml-3 my-4 text-center mb-3">TODO LIST</h2>
+    <div class="container input-group mb-4">
+      <input class="form-control" id="search-input">
+      <button class="input-group-append btn btn-danger" id="search">검색</button>
+    </div>
     
     <ul class="list-group">
       <% for(let ele of posts){ %>
@@ -63,6 +67,28 @@
       
       // $(this)는 $(e.target)으로 대체 가능하다.(지금 누른것)
       // 하지만 e.target이나 this같은 키워드 뒤에 jQuery함수를 붙이고 싶다면 $()안에 싸매야한다.
+
+
+      
+      // GET요청으로 서버에게 데이터 보내는 법
+      // Query string 작성해서 GET 요청하기
+      $('#search').click(() => {
+         let inputVal = $('#search-input').val();
+         window.location.replace(`/search?value=${inputVal}`);
+      });
+      // 검색버튼 누르면 현재 URL주소를 /search?value=입력한값 으로 바꾸라고 코드를짬.
+      // URL주소 변경하는게 GET요청이랑 똑같은 짓이기 때문에
+      // 검색버튼 누르는 순간 /search로 GET요청을 날리게 되고
+      // value: 입력한값 이라는 정보가 서버로 전달된다. 끝!
+
+
+
+
+
+
+
+
+
     </script>
 
 
