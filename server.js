@@ -439,6 +439,7 @@ app.get('/search', (요청, 응답) => {
    // 이건 object자료로 전달되기 때문에 요청.query.value 하면 아까 작성했던 입력한값 데이터가 잘출력된다. 
    db.collection('post').find({todo: 요청.query.value}).toArray((에러, 결과) => {
     // 글의 제목이 "사용자가 입력한 검색어"인 게시물을 꺼내보자.
+    // find() 안에 저렇게만 쓰면 index활용 안하고 모든항목을 찾아보는 full scan할듯.
       console.log(결과);
       응답.render('search.ejs', {search: 결과});
    });

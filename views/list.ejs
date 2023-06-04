@@ -81,7 +81,15 @@
       // 검색버튼 누르는 순간 /search로 GET요청을 날리게 되고
       // value: 입력한값 이라는 정보가 서버로 전달된다. 끝!
 
+      // (참고) 프론트엔드에서 Query string을 쉽게 만들려면
+      // jQuery 문법중에 param, serialize를 쓰면 된다.
+      let query = {이름1: '값1', 이름2: '값2'};
+      let queryString = $.param(query); // 이름1=값1&이름2=값2 이게 남음.
+      // 이렇게 하면 object자료를 query string으로 쉽게 변환가능하고
 
+      let queryString2 = $('폼태그를찾고').serialize();
+      // 이렇게 하면 폼태그 안에있는 모든 <input>을 query string으로 쉽게 변환해준다.
+      // 다만 <input>에 name속성이 있어야한다.
 
 
 
