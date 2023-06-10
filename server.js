@@ -517,3 +517,41 @@ app.get('/search2', (요청, 응답)=>{
 // 그니까 맨처음 검색할땐 맨앞에 20개만 찾아줘~
 // 그 다음엔 다음 20개를 찾아줘~
 // 이렇게 요구할수 있다는 거다. 대부분의 게시판들은 이런 방법을 이용한다.
+
+// 해결책 3. Search index를 사용한다.
+// MongoDB Atlas에서만 제공하는 기능인데
+// 클러스터 들어가보면 아마 Search어쩌구라는 메뉴가 있다. 그거 누르면 된다.
+// 그러면 Search index라는걸 만들 수있다. 이름 잘지어서 만들어주자.
+// index이름은 자유 작명이고 어떤 collection에 있는 항목을 indexing할건지 선택하면 된다.
+// 그리고 Analyzer를 설정하는 부분이 있다.
+// 이걸 lucene.korean으로 바꿔주면 똑똑하게 한국어에 딱맞게 인덱싱을 해준다.
+// lucene이 뭐냐면 그 형태소분석기 이런건데 한국어는 조사 이런게 붙잖아
+// 글쓰기를  글쓰기입니다  글쓰기지만  글쓰기라도
+// 이런식으로 단어뒤에 쓸데없는 조사가 붙는데 이걸다 제거하고 필요한 단어만 남긴다고 보면된다. 
+// 이렇게 하면 Search index를 만들수 있다. 끝
+
+// Search index이용해서 검색요청하는 법
+app.get('/realsearch', (요청, 응답) => {
+  console.log(요청.query);
+  const searchCondition = [
+    {$search: {
+        index: 'titleSearch', // 님이만든인덱스명.
+        text: {
+          query: 요청.query.value, // 입력한 검색어.
+          path: 'todo'  // 어떤 항목에서 찾을건지. 할일,날짜에서 동시에 찾고 싶으면 ['todo', 'date'] 이렇게 써준다.
+        }
+    }}
+  ];
+
+  db.collection('post').aggregate(searchCondition).toArray((에러, 결과) => {
+    // find()함수와 같은기능인 aggregate()함수를 쓰는데 이건 검색조건 여러개를 붙이고 싶을때 유용한 함수이다.
+    // aggregate()안에 [{검색조건1}, {검색조건2} ...] 이렇게 조건을 여러개 집어넣을 수있다.
+    // 데이터 꺼내는 pipeline구축가능.
+    // 지금은 하나만 집어넣어봄.
+    console.log(결과);
+    응답.render('search.ejs', {search : 결과});
+  })
+});
+// 연산자인 $search를 넣으면 search index에서 검색이 된다고 한다.
+// 길어보이지만 search index쓰는 방법을 카피해서 썼을뿐, 이것도 원리 이해보다는 복붙의 영역임.
+// 저렇게 쓰면 '글쓰기' 라고 검색했을때 '글쓰기합니다~' 이런 문장들도 잘 검색해준다. 끝
