@@ -562,7 +562,7 @@ const 검색조건 = [
     $search: {
       index: 'titleSearch', // 님이만든인덱스명.
       text: {
-        query: 요청.query.value, // 입력한 검색어.
+//      query: 요청.query.value, // 입력한 검색어.
         path: 'todo'  // 어떤 항목에서 찾을건지. 할일,날짜에서 동시에 찾고 싶으면 ['todo', 'date'] 이렇게 써준다.
       }
     }
