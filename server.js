@@ -583,5 +583,12 @@ const 검색조건 = [
 
 // router폴더와 파일을 만들어 API들 관리하기
 
-app.use('/', require('./routes/shop.js'));
+// app.use('/', require('./routes/shop.js'));
 // 고객이 /경로로 요청했을때 이런 미들웨어(방금만든 라우터)를 적용해주세요. 라는 뜻이다.
+
+
+app.use('/shop', require('./routes/shop.js'));
+// 고객이 /shop경로로 요청(접속)하면 shop.js라우터를 이용하겠다. 라는 뜻이다.
+
+app.use('/board/sub', require('./routes/board.js'));
+// 연습으로 나눈 라우터 미들웨어.
