@@ -582,13 +582,25 @@ const 검색조건 = [
 
 
 // router폴더와 파일을 만들어 API들 관리하기
+// route보관용 폴더와 파일을 하나 만들어준다.
+// server.js와 나란한 곳에 routes라는 폴더를 만들고 그안에 shop.js라는 파일을 만들어준다.
 
 // app.use('/', require('./routes/shop.js'));
 // 고객이 /경로로 요청했을때 이런 미들웨어(방금만든 라우터)를 적용해주세요. 라는 뜻이다.
 
 
 app.use('/shop', require('./routes/shop.js'));
+// 미들웨어를 조건부로 실행하고 싶을때 쓰는 문법이다.
 // 고객이 /shop경로로 요청(접속)하면 shop.js라우터를 이용하겠다. 라는 뜻이다.
+// 누군가 /post경로로 요청하면 실행할 미들웨어는 app.use('/post', 미들웨어명)
+// 누군가 /list경로로 요청하면 실행할 미들웨어는 app.use('/list', 미들웨어명)
+// 이렇게 사용할 수있다.
+// 위에처럼 작성하면 고객이 /shop/shirts 그리고 /shop/pants로 접속시
+// shop.js라우터가 라우팅을 해주게 되며, 실제 테스트해보면 응답메세지가 잘뜬다.
 
 app.use('/board/sub', require('./routes/board.js'));
 // 연습으로 나눈 라우터 미들웨어.
+
+// 장점은
+// 1. 이건 /shop에 관련된 route들이구나~! 라고 보기가 쉬워진다.
+// 2. /shop과 관련된 route들에만 미들웨어를 적용하고 싶을 때도 매우 편리해진다.
