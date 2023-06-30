@@ -19,9 +19,8 @@
   <%- include('nav.html') %>
 
   <h4 class="container mt-4 text-center"><strong>Login</strong></h4>
-
   <div class="container mt-3">
-    <form action="/tologin" method="POST">   <!-- /add 경로로 POST요청함. -->
+    <form action="/tologin" method="POST">   <!-- /tologin 경로로 POST요청함. -->
       <div class="form-group">
         <label for="id" style="color: rgb(109, 40, 173);">ID</label>
         <input type="text" id="id" name="id">
@@ -34,6 +33,27 @@
     </form>
     <button class="btn btn-outline-secondary logout mt-3">LOGOUT</button>
   </div>
+
+
+  <h4 class="container mt-5 text-center"><strong>Sign Up</strong></h4>
+  <div class="container mt-3">
+    <form action="/register" method="POST">   <!-- /register 경로로 POST요청함. -->
+      <div class="form-group">
+        <label for="id" style="color: rgb(109, 40, 173);">ID</label>
+        <input type="text" id="id" name="id">
+      </div>
+      <div class="form-group">
+        <label for="passw" style="color: rgb(109, 40, 173);">PASSWORD</label>
+        <input type="password" id="passw" name="pw">
+      </div>
+      <button type="submit" class="btn btn-outline-secondary send">Sign Up</button>
+    </form>
+  </div>
+
+
+
+
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>

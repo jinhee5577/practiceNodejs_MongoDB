@@ -392,6 +392,16 @@ passport.deserializeUser((아이디, done) => {
 
 
 
+// 회원기능이 필요하면 passport셋팅하는 부분이 위에 있어야함.
+app.post('/register', (요청, 응답) => {
+  db.collection('login').insertOne(요청.body, (에러, 결과) => {
+    응답.redirect('/');
+  });
+});
+
+
+
+
 const doLogin = (요청, 응답, next) => { // 미들웨어
   // 이함수는 "요청.user가 있으면 next()로 다음으로 통과시켜주고요, 없으면 에러메세지를 응답.send()해주세요" 라는 뜻이다.
     if(요청.user) {
