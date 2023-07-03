@@ -75,31 +75,9 @@ app.get('/write', (요청, 응답) => {
 
 
 
-// 2021년 이후로 설치한 프로젝트들은 body-parser 라이브러리가 express에 기본 포함이라 
-// 따로 npm으로 설치할 필요가없다. 
-// app.use(express.urlencoded({extended: true}));  <-- 이 코드만 위쪽에 추가해주면 된다. 
-
-app.post('/add', (요청, 응답) => {
-    console.log(요청.body);  // { todo: 'any', date: '2.13' } 이렇게 나온다.
-
-    db.collection('index').findOne({name : '게시물갯수'}, (에러, 결과) => { 
-       console.log(결과.totalIndex);
-       const totalInd = 결과.totalIndex;  
-       
-       const data = {_id : totalInd + 1, ...요청.body}; 
-       db.collection('post').insertOne(data, (에러, 결과) => { 
-          console.log('저장완료.');
-          응답.send('전송완료.');   
-          db.collection('index').updateOne({name : '게시물갯수'}, {$inc : {totalIndex : 1}}, (에러, 결과) => { 
-             // {$inc : { totalPost : 1 }} 기존값에 1만큼 더해준다. 
-             if(에러){return console.log(에러);}
-          });
-       });
-    });
-});
-// 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
-// 요청.body는 폼에 입력한 제목과 날짜 데이터가 들어가있을 것이다. 
-
+// 2021년 이후로 설치한 프로젝트들은 body-parser 라이브러리가 express에 기본 포함이라
+// 따로 npm으로 설치할 필요가없다.
+// app.use(express.urlencoded({extended: true}));  <-- 이 코드만 위쪽에 추가해주면 된다.
 
 
 
@@ -393,11 +371,34 @@ passport.deserializeUser((아이디, done) => {
 
 
 // 회원기능이 필요하면 passport셋팅하는 부분이 위에 있어야함.
-app.post('/register', (요청, 응답) => {
+app.post('/register', (요청, 응답) => { // 간단한 회원가입 기능.
   db.collection('login').insertOne(요청.body, (에러, 결과) => {
     응답.redirect('/');
   });
 });
+
+
+app.post('/add', (요청, 응답) => {
+  console.log(요청.body);  // { todo: 'any', date: '2.13' } 이렇게 나온다.
+  // 요청.user에 현재 로그인한 유저의 정보가 들어있다.
+
+  db.collection('index').findOne({name : '게시물갯수'}, (에러, 결과) => {
+     console.log(결과.totalIndex);
+     const totalInd = 결과.totalIndex;
+     
+     const data = {_id: totalInd + 1, ...요청.body, user_id: 요청.user._id};
+     db.collection('post').insertOne(data, (에러, 결과) => {
+        console.log('저장완료.');
+        응답.send('전송완료.');   
+        db.collection('index').updateOne({name : '게시물갯수'}, {$inc : {totalIndex : 1}}, (에러, 결과) => { 
+           // {$inc : { totalPost : 1 }} 기존값에 1만큼 더해준다. 
+           if(에러){return console.log(에러);}
+        });
+     });
+  });
+});
+// 누군가가 /add 경로로 post 요청을 할때 터미널 콘솔창에 요청.body를 출력해볼 수있다. 
+// 요청.body는 폼에 입력한 제목과 날짜 데이터가 들어가있을 것이다.
 
 
 
