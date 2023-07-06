@@ -59,9 +59,10 @@
             
             // e.target : 내가 클릭한것.
             // $(this)  : 현재 이벤트가 동작하는 곳.
-         }).fail((xhr, code, err) => { 
+         }).fail((xhr, code, err) => {
            // 3개의 파라미터는 차례로 jQuery의 XMLHttpRequest, 에러코드, 에러메세지 이다.
-           // ajax요청이 실패했을때 실행할 코드       
+           // ajax요청이 실패했을때 실행할 코드
+           window.alert('다른 작성자의 글은 삭제할수 없습니다.');
          })
       });
       
