@@ -668,3 +668,15 @@ app.use('/board/sub', require('./routes/board.js'));
 // 로그인 안하고 조작하려하면?
 // 그럼 앞으로 어떤 코드를 더짜야할지 자연스럽게 알게된다.
 // 이런게 보안잡는거지 보안은 어렵고 그런거 아닙니다.
+
+
+
+
+app.get('/upload', (요청, 응답) => {
+  응답.render('upload.ejs');
+});
+
+
+app.post('/upload', (요청, 응답) => {
+  
+});
