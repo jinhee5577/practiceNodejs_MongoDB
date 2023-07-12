@@ -672,11 +672,32 @@ app.use('/board/sub', require('./routes/board.js'));
 
 
 
+
+// npm install multer 입력해서 라이브러리 설치해준다.
+// 이 라이브러리는 multipart/form-data를 통해 업로드된 파일을 매우쉽게 저장, 이름변경,
+// 처리할수 있게 도와주는 라이브러리 이다.
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination : function(req, file, cb){
+    cb(null, './public/imges');
+  },
+  filename : function(req, file, cb){
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({storage : storage});
+
 app.get('/upload', (요청, 응답) => {
   응답.render('upload.ejs');
 });
 
-
-app.post('/upload', (요청, 응답) => {
-  
+app.post('/upload', upload.single('profile'), (요청, 응답) => {
+   // upload.single('profile')을 미들웨어처럼 실행시켜주면 된다.
+   // 업로드한 파일을 일반하드 내작업폴더에 저장 시켜준다.
+   // 누군가 /upload로 POST요청을 하면 upload.single('어떤input인지 name속성')을 실행시키면 된다.
+   // 그럼 multer셋팅 한대로 지가 알아서 업로드한 파일을 처리해준다.
+   // * input의 name속성 적으라는 곳에는 파일 업로드시킬 input의 name속성명을 적으면 된다.
+   응답.send('업로드 완료.');
 });
