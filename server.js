@@ -684,6 +684,8 @@ const storage = multer.diskStorage({
   },
   filename : function(req, file, cb){
     cb(null, file.originalname);
+    // cb(null, file.originalname + new Date()날짜);
+    // 이렇게 날짜를 함께 넣어서 저장해 줄수있다.
   }
 });
 
@@ -700,4 +702,9 @@ app.post('/upload', upload.single('profile'), (요청, 응답) => {
    // 그럼 multer셋팅 한대로 지가 알아서 업로드한 파일을 처리해준다.
    // * input의 name속성 적으라는 곳에는 파일 업로드시킬 input의 name속성명을 적으면 된다.
    응답.send('업로드 완료.');
+
+   // 파일을 여러개 선택해서 업로드 하고 싶으면?
+   // upload.single('profile')는 파일 하나만 업로드 저장함.
+   // upload.array('input name속성', 최대 한번에 받을 갯수(숫자)) 이렇게 적어주면됨.
+   // 업로드 페이지에서 input테그를 여러개 선택할수 있도록 고쳐준다.
 });
