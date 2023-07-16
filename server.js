@@ -678,6 +678,9 @@ app.use('/board/sub', require('./routes/board.js'));
 // 처리할수 있게 도와주는 라이브러리 이다.
 
 const multer = require('multer');
+const path = require('path');
+// path라는 변수는 nodejs기본 내장 라이브러리 path라는걸 활용해 파일의 경로, 이름, 확장자 등을 알아낼때 사용한다.
+
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
     cb(null, './public/imges');
@@ -686,6 +689,34 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
     // cb(null, file.originalname + new Date()날짜);
     // 이렇게 날짜를 함께 넣어서 저장해 줄수있다.
+  },
+  fileFilter: function(req, file, callback) {
+    // 업로드한 파일의 확장자를 알아내서 png랑 맞는지 비교하는 과정이다.
+    const ext = path.extname(file.originalname);
+    if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+       return callback(new Error('PNG, JPG만 업로드하세요'));
+    }
+    callback(null, true);
+  },
+  limits: { // limits는 파일의 사이즈 제한을 걸고 싶을때 쓴다. 1024 * 1024는 1MB를 뜻한다.
+    fileSize: 1024 * 1024
+  }
+});
+
+// 확장자나 파일사이즈등 제한을 주고 싶을때
+// 위에 셋팅하는 곳에 fileFilter등 항목을 추가하거나, 아래코드 처럼 추가하거나 둘중 하나 되는걸로 실행해준다.
+const upload2 = multer({
+  storage: storage,
+  fileFilter: function(req, file, callback) {
+    // 업로드한 파일의 확장자를 알아내서 png랑 맞는지 비교하는 과정이다.
+    const ext = path.extname(file.originalname);
+    if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+       return callback(new Error('PNG, JPG만 업로드하세요'));
+    }
+    callback(null, true);
+  },
+  limits: { // limits는 파일의 사이즈 제한을 걸고 싶을때 쓴다. 1024 * 1024는 1MB를 뜻한다.
+    fileSize: 1024 * 1024
   }
 });
 
