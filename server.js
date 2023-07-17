@@ -682,6 +682,11 @@ app.use('/board/sub', require('./routes/board.js'));
 // DB에 저장하는게 일종의 웹개발 관습이다. 아무튼 우린 1번으로 배워보도록 하자.
 // 저장할 이미지가 백만개라면 2번으로 해야한다. 구글에 튜토리얼 100만개 있음.
 
+
+// 업로드한 이미지를 하드에 저장합시다
+// 사용자가 업로드한 이미지는 그냥 우리 서버돌리는 컴퓨터에 그대로 저장을 해보도록 하자.
+// 우리 작업폴더안에 public/imges라는 폴더를 하나 만들어서 거기다가 다 몰아넣을거다.
+
 // npm install multer 입력해서 라이브러리 설치해준다.
 // 이 라이브러리는 multipart/form-data를 통해 업로드된 파일을 매우쉽게 저장, 이름변경,
 // 처리할수 있게 도와주는 라이브러리 이다.
@@ -690,11 +695,17 @@ const multer = require('multer');
 const path = require('path');
 // path라는 변수는 nodejs기본 내장 라이브러리 path라는걸 활용해 파일의 경로, 이름, 확장자 등을 알아낼때 사용한다.
 
+// 설치가 끝났으면 server.js에서 multer셋팅을 이렇게 해주면 된다.
+// 1. diskStorage라는 함수를 쓰면 업로드된 파일을 일반하드(같은 내작업 폴더)에 저장할수 있다.
+// memoryStorage라고 쓰면 하드 말고 램에 저장할수 있다. (휘발성)
 const storage = multer.diskStorage({
   destination : function(req, file, cb){
+    // 2. destination: 업로드된 파일을 하드 어떤 경로에 저장할지 정하는 부분이다. 알아서 정하자.
     cb(null, './public/imges');
   },
   filename : function(req, file, cb){
+    // 3. filename: 파일의 이름을 결정하는 부분이다. 저장할때 어떤 이름으로 저장할겁니까.
+    // file.originalname이라고 쓰면 그냥 원본 그대로라는 뜻이다.
     cb(null, file.originalname);
     // cb(null, file.originalname + new Date()날짜);
     // 이렇게 날짜를 함께 넣어서 저장해 줄수있다.
@@ -729,6 +740,7 @@ const upload2 = multer({
   }
 });
 
+// 4. 그리고 마지막줄에서 upload라는 변수를 만들고 multer셋팅을 다 저장해주면 된다. 끝!
 const upload = multer({storage : storage});
 
 app.get('/upload', (요청, 응답) => {
@@ -764,3 +776,15 @@ app.get('/image/:imgeName', (요청, 응답) => {
 // /public/imges/:파라미터 라는 파일을 보내주세요~ 라는 코드이다.
 // 그냥 일반 파일을 유저에게 보내고 싶으면 sendFile이라는 함수를 쓰면된다.
 // 실제로 브라우저에서 /image/music.jpg라고 접속하면 아까 업로드한 파일이 잘나오네요 성공!
+
+
+// 아마존 같은 클라우드 서비스에서 하드를 구매했다면 과정이 대충 이렇게 쉽다.
+// 0. id가 admin인 유저가 마이페이지에서 자기 프로필 사진을 업로드 한다.
+// 1. 그럼 서버는 뭘해야하냐면.. 이미지 저장 요청이 들어오면 아마존에서 제공하는 예제코드를 실행하면 된다.
+// 그럼 아마존 하드에 저장해줌.
+// 2. 저장이 성공하면 아마존에서 이미지 URL을 퉤 뱉어준다. amazon.com/image/music.jpg 대충 이렇다고 치자.
+// 3. 그 amazon.com/image/music.jpg 이라는 URL을 프로필 이미지만 따로 모아놓은 MongoDB document에
+// { id: admin, 프로필이미지: amazon.com/image/music.jpg }이런 정보를 저장한다.
+// 이미지 URL와 이미지가 누구 것인지의 정보를 저장하는 셈이죠? 그럼 저장과정 끝!
+// 4. 이미지 보여주기는 더쉽다. 그 이미지가 필요한 페이지에선 amazon.com/image/music.jpg이라는
+// URL을 DB에서 불러와서 <img>태그 안에 넣기만 하면 된다.
